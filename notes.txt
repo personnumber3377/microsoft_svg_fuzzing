@@ -1,0 +1,826 @@
+c:\symbols\winword.pdb\64915CA6505C4BA7AFC48315DB70460F2\winword.pdb
+
+
+
+#include <Windows.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+// Type definition for FMain function from wwlib.dll
+typedef void (__stdcall *FMain_t)(void*, void*, unsigned int, unsigned int);
+
+// Dummy versions of original params (adjust as needed for your fuzz loop)
+void* dummy_param1 = nullptr;
+void* dummy_param2 = nullptr;
+unsigned int dummy_param3 = 0;
+unsigned int dummy_param4 = 0;
+
+// Your fuzzing function
+void RunFuzzLoop() {
+    std::cout << "[+] Running fuzz loop..." << std::endl;
+
+    // Insert your fuzzing code here, e.g.
+    // - Load test input
+    // - Call target COM/svg render/etc APIs
+    // - Monitor for crashes
+    
+    std::ifstream file("input.svg", std::ios::binary);
+    if (!file.is_open()) {
+        std::cerr << "[-] Failed to open input.svg" << std::endl;
+        return;
+    }
+
+    std::vector<uint8_t> buffer((std::istreambuf_iterator<char>(file)), {});
+    file.close();
+
+    std::cout << "[+] Loaded input.svg with size: " << buffer.size() << " bytes" << std::endl;
+
+    // You could call your fuzz target function here, similar to your fuzz_function()
+}
+
+int main() {
+    std::wcout << L"[+] Loading wwlib.dll..." << std::endl;
+    HMODULE hWwlib = LoadLibraryW(L"wwlib.dll");
+    if (!hWwlib) {
+        std::wcerr << L"[-] Failed to load wwlib.dll (" << GetLastError() << L")" << std::endl;
+        return 1;
+    }
+
+    std::wcout << L"[+] Getting FMain function..." << std::endl;
+    FARPROC pFMain = GetProcAddress(hWwlib, "FMain");
+    if (!pFMain) {
+        std::wcerr << L"[-] Failed to find FMain in wwlib.dll (" << GetLastError() << L")" << std::endl;
+        return 1;
+    }
+
+    std::wcout << L"[+] Calling FMain..." << std::endl;
+    reinterpret_cast<FMain_t>(pFMain)(dummy_param1, dummy_param2, dummy_param3, dummy_param4);
+
+    std::wcout << L"[+] Running fuzz loop after FMain..." << std::endl;
+    RunFuzzLoop();
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* private: enum InitFailureReason __cdecl Boot::IfrLoadMso(void) __ptr64 */
+
+InitFailureReason __thiscall Boot::IfrLoadMso(Boot *this)
+
+{
+  InitFailureReason IVar1;
+  HINSTANCE__ *pHVar2;
+  time_point<> *this_00;
+  
+  this_00 = (time_point<> *)0x182786bb0;
+  pHVar2 = Mso::LoadMso::DllData::Load((DllData *)0x182786bb0,false);
+  if (pHVar2 != (HINSTANCE__ *)0x0) {
+    this[0x40e4] = (Boot)0x1;
+    if (_s_processStartTime != -0x8000000000000000) {
+      this_00 = &s_processStartTime;
+      Ordinal_11177(&s_processStartTime,1);
+    }
+    IVar1 = IfrInitLogging((Boot *)this_00);
+    return IVar1;
+  }
+  DisplayAppNotConfiguredMsg();
+  return 0x33;
+}
+
+
+
+
+
+0:000> k
+ # Child-SP          RetAddr               Call Site
+00 0000004a`f5eff540 00007ffd`eab4eed6     wwlib!StopAndLogBootProfiler+0xb1
+01 0000004a`f5eff570 00007ffd`ea83921d     wwlib!StopBootProfiler+0xe
+02 0000004a`f5eff5a0 00007ffd`ea823b29     wwlib!GetUtidFromCpItap_Old+0x10b2
+03 0000004a`f5eff640 00007ffd`ea8e0429     wwlib!ExecuteActionWithWatchdog+0xe9
+04 0000004a`f5eff6e0 00007ffd`ea8e087f     wwlib!ExecuteFunctionWithCallStackWatchdog+0x102
+05 0000004a`f5eff730 00007ffd`e9f985b2     wwlib!CleanUpForExit+0x83
+06 0000004a`f5eff760 00007ff7`b507f115     wwlib!FMain+0x62
+07 0000004a`f5eff790 00007ff7`b50ccfea     fuzzer!WinMain+0x245 [C:\Users\elsku\newfuzzing\fuzzer.cpp @ 231] 
+08 (Inline Function) --------`--------     fuzzer!invoke_main+0x21 [D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 102] 
+09 0000004a`f5eff820 00007fff`00ece8d7     fuzzer!__scrt_common_main_seh+0x106 [D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288] 
+0a 0000004a`f5eff860 00007fff`0279bf6c     KERNEL32!BaseThreadInitThunk+0x17
+0b 0000004a`f5eff890 00000000`00000000     ntdll!RtlUserThreadStart+0x2c
+
+
+
+
+
+
+undefined8 __cdecl
+FMain(undefined8 param_1,undefined8 param_2,uint param_3,undefined8 param_4,
+     BootProfilerDescriptor *param_5)
+
+{
+  char cVar1;
+  ShutdownEntryPoint SVar2;
+  ulonglong uVar3;
+  
+                    /* 0x238550  3  FMain */
+  vpBootProfilerDescriptor = param_5;
+  if (_DAT_1827e2b84 == 0) {
+    uVar3 = (ulonglong)param_3;
+    _DAT_1827e2b84 = 1;
+    _vInstInfo = param_1;
+    _DAT_1827a0560 = param_2;
+    cVar1 = FWordBoot(uVar3,param_4);
+    SVar2 = (ShutdownEntryPoint)uVar3;
+    if (cVar1 == '\0') {
+      DAT_18278107e = 1;
+      if (vhwndApp != (HWND__ *)0x0) {
+        SVar2 = (ShutdownEntryPoint)CONCAT71((int7)(uVar3 >> 8),7);
+        FAppClose(SVar2);
+      }
+      CleanUpForExit(SVar2,(ShutdownEntryPoint)CONCAT71((int7)((ulonglong)param_4 >> 8),7));
+      return 0;
+    }
+    CodeMarker(0x1f5);
+    if (vfMainExe != false) {
+      MsgPump::FMainLoop();
+      Ordinal_7228(0x1057746);
+    }
+  }
+  return 1;
+}
+
+we actually call this here: CleanUpForExit(SVar2,(ShutdownEntryPoint)CONCAT71((int7)((ulonglong)param_4 >> 8),7));
+
+therefore FWordBoot fails with some wrong return code which is not zero...
+
+
+void WinMain(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined4 param_4)
+
+{
+  char cVar1;
+  LSTATUS LVar2;
+  undefined4 uVar3;
+  DWORD DVar4;
+  HMODULE hModule;
+  FARPROC pFVar5;
+  wchar_t *pwVar6;
+  ulonglong uVar7;
+  bool bVar8;
+  undefined auStackY_2a8 [32];
+  DWORD local_278 [2];
+  int local_270 [2];
+  DWORD local_268 [2];
+  HKEY local_260;
+  WCHAR local_258 [264];
+  ulonglong local_48;
+  
+  local_48 = __security_cookie ^ (ulonglong)auStackY_2a8;
+  local_278[0] = 0;
+  local_260 = (HKEY)0x0;
+  _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word\\Boot ",
+                    0x10);
+  LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,local_258,0,3,&local_260);
+  if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+    local_268[0] = 0;
+    LVar2 = RegQueryValueExW(local_260,L"BootProfilerResiliency",(LPDWORD)0x0,local_268,(LPBYTE) 0x0,
+                             local_278);
+    RegCloseKey(local_260);
+    if (LVar2 != 0) goto LAB_1400010fb;
+  }
+  else {
+LAB_1400010fb:
+    local_270[0] = 0;
+    local_268[0] = 4;
+    local_260 = (HKEY)0x0;
+    _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word\\Bo ot"
+                      ,0x10);
+    LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,local_258,0,3,&local_260);
+    if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+      local_278[0] = 0;
+      LVar2 = RegQueryValueExW(local_260,L"BootProfilerMsec",(LPDWORD)0x0,local_278,
+                               (LPBYTE)local_270,local_268);
+      RegCloseKey(local_260);
+      if ((LVar2 == 0) &&
+         (((local_278[0] == 4 && (local_270[0] != 0)) &&
+          (uVar3 = FUN_1400038f0((undefined8 *)&vBootProfilerDescriptor), (char)uVar3 != '\0'))) ) {
+        _DAT_140008958 = local_270[0];
+        uVar7 = 1;
+        DAT_140008928 = CreateEventW((LPSECURITY_ATTRIBUTES)0x0,1,0,(LPCWSTR)0x0);
+        if (((DAT_140008928 == (HANDLE)0x0) ||
+            (cVar1 = FUN_140003960(0x140008920,uVar7), cVar1 == '\0')) &&
+           (_vBootProfilerDescriptor != (HANDLE)0x0)) {
+          ReleaseMutex(_vBootProfilerDescriptor);
+        }
+      }
+    }
+  }
+  local_260 = (HKEY)0x0;
+  local_278[0] = 0;
+  local_270[0] = 0;
+  local_268[0] = 4;
+  _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word",0x 10);
+  pwVar6 = local_258;
+  LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,pwVar6,0,1,&local_260);
+  if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+    pwVar6 = L"WwlibtDll";
+    LVar2 = RegQueryValueExW(local_260,L"WwlibtDll",(LPDWORD)0x0,local_278,(LPBYTE)local_270,
+                             local_268);
+    RegCloseKey(local_260);
+    if ((LVar2 != 0) || (local_278[0] != 4)) goto LAB_14000125c;
+    bVar8 = local_270[0] != 0;
+  }
+  else {
+LAB_14000125c:
+    bVar8 = false;
+  }
+  if (bVar8) {
+    hModule = Mso::SafeLoadLibrary(L"wwlibt.dll",pwVar6,0);
+LAB_140001e47:
+    if (hModule == (HMODULE)0x0) goto LAB_140001e58;
+  }
+  else {
+    pwVar6 = L"wwlib.dll";
+    hModule = LoadLibraryExW(L"wwlib.dll",(HANDLE)0x0,0x1000);
+    if ((hModule == (HMODULE)0x0) && (DVar4 = GetLastError(), DVar4 == 0x57)) {
+      pwVar6 = (wchar_t *)GetModuleHandleW(L"kernel32.dll");
+      pFVar5 = GetProcAddress((HMODULE)pwVar6,"AddDllDirectory");
+      if (pFVar5 == (FARPROC)0x0) {
+        pwVar6 = L"wwlib.dll";
+        hModule = LoadLibraryExW(L"wwlib.dll",(HANDLE)0x0,0);
+      }
+    }
+    if (hModule == (HMODULE)0x0) {
+      hModule = HinstLoadWWLibDarwin(pwVar6);
+      goto LAB_140001e47;
+    }
+  }
+  pFVar5 = GetProcAddress(hModule,"FMain");
+  if (pFVar5 != (FARPROC)0x0) {
+    (*pFVar5)(param_1,param_2,param_4,DAT_140008110);
+  }
+LAB_140001e58:
+  __security_check_cookie(local_48 ^ (ulonglong)auStackY_2a8);
+  return;
+}
+
+
+
+
+therefore we need to do all of the shit here in our program...
+
+
+
+
+
+
+
+/* WARNING: Function: _guard_dispatch_icall replaced with injection: guard_dispatch_icall */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* WARNING: Exceeded maximum restarts with more pending */
+
+void WinMain(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined4 param_4)
+
+{
+  char cVar1;
+  LSTATUS LVar2;
+  undefined4 uVar3;
+  DWORD DVar4;
+  HMODULE hModule;
+  FARPROC pFVar5;
+  wchar_t *pwVar6;
+  ulonglong uVar7;
+  bool bVar8;
+  undefined auStackY_2a8 [32];
+  DWORD local_278 [2];
+  int local_270 [2];
+  DWORD local_268 [2];
+  HKEY local_260;
+  WCHAR local_258 [264];
+  ulonglong local_48;
+  
+  local_48 = __security_cookie ^ (ulonglong)auStackY_2a8;
+  local_278[0] = 0;
+  local_260 = (HKEY)0x0;
+  _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word\\Boot ",
+                    0x10);
+  LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,local_258,0,3,&local_260);
+  if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+    local_268[0] = 0;
+    LVar2 = RegQueryValueExW(local_260,L"BootProfilerResiliency",(LPDWORD)0x0,local_268,(LPBYTE) 0x0,
+                             local_278);
+    RegCloseKey(local_260);
+    if (LVar2 != 0) goto LAB_1400010fb;
+  }
+  else {
+LAB_1400010fb:
+    local_270[0] = 0;
+    local_268[0] = 4;
+    local_260 = (HKEY)0x0;
+    _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word\\Bo ot"
+                      ,0x10);
+    LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,local_258,0,3,&local_260);
+    if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+      local_278[0] = 0;
+      LVar2 = RegQueryValueExW(local_260,L"BootProfilerMsec",(LPDWORD)0x0,local_278,
+                               (LPBYTE)local_270,local_268);
+      RegCloseKey(local_260);
+      if ((LVar2 == 0) &&
+         (((local_278[0] == 4 && (local_270[0] != 0)) &&
+          (uVar3 = FUN_1400038f0((undefined8 *)&vBootProfilerDescriptor), (char)uVar3 != '\0'))) ) {
+        _DAT_140008958 = local_270[0];
+        uVar7 = 1;
+        DAT_140008928 = CreateEventW((LPSECURITY_ATTRIBUTES)0x0,1,0,(LPCWSTR)0x0);
+        if (((DAT_140008928 == (HANDLE)0x0) ||
+            (cVar1 = FUN_140003960(0x140008920,uVar7), cVar1 == '\0')) &&
+           (_vBootProfilerDescriptor != (HANDLE)0x0)) {
+          ReleaseMutex(_vBootProfilerDescriptor);
+        }
+      }
+    }
+  }
+  local_260 = (HKEY)0x0;
+  local_278[0] = 0;
+  local_270[0] = 0;
+  local_268[0] = 4;
+  _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word",0x 10);
+  pwVar6 = local_258;
+  LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,pwVar6,0,1,&local_260);
+  if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+    pwVar6 = L"WwlibtDll";
+    LVar2 = RegQueryValueExW(local_260,L"WwlibtDll",(LPDWORD)0x0,local_278,(LPBYTE)local_270,
+                             local_268);
+    RegCloseKey(local_260);
+    if ((LVar2 != 0) || (local_278[0] != 4)) goto LAB_14000125c;
+    bVar8 = local_270[0] != 0;
+  }
+  else {
+LAB_14000125c:
+    bVar8 = false;
+  }
+  if (bVar8) {
+    hModule = Mso::SafeLoadLibrary(L"wwlibt.dll",pwVar6,0);
+LAB_140001e47:
+    if (hModule == (HMODULE)0x0) goto LAB_140001e58;
+  }
+  else {
+    pwVar6 = L"wwlib.dll";
+    hModule = LoadLibraryExW(L"wwlib.dll",(HANDLE)0x0,0x1000);
+    if ((hModule == (HMODULE)0x0) && (DVar4 = GetLastError(), DVar4 == 0x57)) {
+      pwVar6 = (wchar_t *)GetModuleHandleW(L"kernel32.dll");
+      pFVar5 = GetProcAddress((HMODULE)pwVar6,"AddDllDirectory");
+      if (pFVar5 == (FARPROC)0x0) {
+        pwVar6 = L"wwlib.dll";
+        hModule = LoadLibraryExW(L"wwlib.dll",(HANDLE)0x0,0);
+      }
+    }
+    if (hModule == (HMODULE)0x0) {
+      hModule = HinstLoadWWLibDarwin(pwVar6);
+      goto LAB_140001e47;
+    }
+  }
+  pFVar5 = GetProcAddress(hModule,"FMain");
+  if (pFVar5 != (FARPROC)0x0) {
+    (*pFVar5)(param_1,param_2,param_4,DAT_140008110);
+  }
+LAB_140001e58:
+  __security_check_cookie(local_48 ^ (ulonglong)auStackY_2a8);
+  return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+
+
+
+void WinMain(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined4 param_4)
+
+{
+  char cVar1;
+  LSTATUS LVar2;
+  undefined4 uVar3;
+  DWORD DVar4;
+  HMODULE hModule;
+  FARPROC pFVar5;
+  wchar_t *pwVar6;
+  ulonglong uVar7;
+  bool bVar8;
+  undefined auStackY_2a8 [32];
+  DWORD local_278 [2];
+  int local_270 [2];
+  DWORD local_268 [2];
+  HKEY local_260;
+  WCHAR local_258 [264];
+  ulonglong local_48;
+  
+  local_48 = __security_cookie ^ (ulonglong)auStackY_2a8;
+  local_278[0] = 0;
+  local_260 = (HKEY)0x0;
+  _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word\\Boot ",
+                    0x10);
+  LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,local_258,0,3,&local_260);
+  if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+    local_268[0] = 0;
+    LVar2 = RegQueryValueExW(local_260,L"BootProfilerResiliency",(LPDWORD)0x0,local_268,(LPBYTE) 0x0,
+                             local_278);
+    RegCloseKey(local_260);
+    if (LVar2 != 0) goto LAB_1400010fb;
+  }
+  else {
+LAB_1400010fb:
+    local_270[0] = 0;
+    local_268[0] = 4;
+    local_260 = (HKEY)0x0;
+    _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word\\Bo ot"
+                      ,0x10);
+    LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,local_258,0,3,&local_260);
+    if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+      local_278[0] = 0;
+      LVar2 = RegQueryValueExW(local_260,L"BootProfilerMsec",(LPDWORD)0x0,local_278,
+                               (LPBYTE)local_270,local_268);
+      RegCloseKey(local_260);
+      if ((LVar2 == 0) &&
+         (((local_278[0] == 4 && (local_270[0] != 0)) &&
+          (uVar3 = FUN_1400038f0((undefined8 *)&vBootProfilerDescriptor), (char)uVar3 != '\0'))) ) {
+        _DAT_140008958 = local_270[0];
+        uVar7 = 1;
+        DAT_140008928 = CreateEventW((LPSECURITY_ATTRIBUTES)0x0,1,0,(LPCWSTR)0x0);
+        if (((DAT_140008928 == (HANDLE)0x0) ||
+            (cVar1 = FUN_140003960(0x140008920,uVar7), cVar1 == '\0')) &&
+           (_vBootProfilerDescriptor != (HANDLE)0x0)) {
+          ReleaseMutex(_vBootProfilerDescriptor);
+        }
+      }
+    }
+  }
+  local_260 = (HKEY)0x0;
+  local_278[0] = 0;
+  local_270[0] = 0;
+  local_268[0] = 4;
+  _snwprintf_s<260>(local_258,0xffffffffffffffff,L"Software\\Microsoft\\Office\\%d.%d\\Word",0x 10);
+  pwVar6 = local_258;
+  LVar2 = RegOpenKeyExW((HKEY)0xffffffff80000001,pwVar6,0,1,&local_260);
+  if ((LVar2 == 0) && (local_260 != (HKEY)0x0)) {
+    pwVar6 = L"WwlibtDll";
+    LVar2 = RegQueryValueExW(local_260,L"WwlibtDll",(LPDWORD)0x0,local_278,(LPBYTE)local_270,
+                             local_268);
+    RegCloseKey(local_260);
+    if ((LVar2 != 0) || (local_278[0] != 4)) goto LAB_14000125c;
+    bVar8 = local_270[0] != 0;
+  }
+  else {
+LAB_14000125c:
+    bVar8 = false;
+  }
+  if (bVar8) {
+    hModule = Mso::SafeLoadLibrary(L"wwlibt.dll",pwVar6,0);
+LAB_140001e47:
+    if (hModule == (HMODULE)0x0) goto LAB_140001e58;
+  }
+  else {
+    pwVar6 = L"wwlib.dll";
+    hModule = LoadLibraryExW(L"wwlib.dll",(HANDLE)0x0,0x1000);
+    if ((hModule == (HMODULE)0x0) && (DVar4 = GetLastError(), DVar4 == 0x57)) {
+      pwVar6 = (wchar_t *)GetModuleHandleW(L"kernel32.dll");
+      pFVar5 = GetProcAddress((HMODULE)pwVar6,"AddDllDirectory");
+      if (pFVar5 == (FARPROC)0x0) {
+        pwVar6 = L"wwlib.dll";
+        hModule = LoadLibraryExW(L"wwlib.dll",(HANDLE)0x0,0);
+      }
+    }
+    if (hModule == (HMODULE)0x0) {
+      hModule = HinstLoadWWLibDarwin(pwVar6);
+      goto LAB_140001e47;
+    }
+  }
+  pFVar5 = GetProcAddress(hModule,"FMain");
+  if (pFVar5 != (FARPROC)0x0) {
+    (*pFVar5)(param_1,param_2,param_4,DAT_140008110);
+  }
+LAB_140001e58:
+  __security_check_cookie(local_48 ^ (ulonglong)auStackY_2a8);
+  return;
+}
+
+
+
+
+
+
+
+
+
+
+    FARPROC pFMain = GetProcAddress(hWwlib, "FMain");
+    if (!pFMain) {
+        std::wcerr << L"[-] Failed to find FMain in wwlib.dll (" << GetLastError() << L")" << std::endl;
+        return 1;
+    }
+
+    std::wcout << L"[+] Calling FMain..." << std::endl;
+    reinterpret_cast<FMain_t>(pFMain)(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+*/
+
+
+
+
+
+
+/*
+
+void SetOfficeWordRegistry() {
+    DWORD zero = 0;
+
+    // Set BootProfilerResiliency = 0
+    RegSetKeyValueW(
+        HKEY_CURRENT_USER,
+        L"Software\\Microsoft\\Office\\16.0\\Word\\Boot",
+        L"BootProfilerResiliency",
+        REG_DWORD,
+        &zero,
+        sizeof(zero)
+    );
+
+    // Set BootProfilerMsec = 0
+    RegSetKeyValueW(
+        HKEY_CURRENT_USER,
+        L"Software\\Microsoft\\Office\\16.0\\Word\\Boot",
+        L"BootProfilerMsec",
+        REG_DWORD,
+        &zero,
+        sizeof(zero)
+    );
+
+    // Set WwlibtDll = "" (empty string disables test DLL override)
+    const wchar_t empty[] = L"";
+    RegSetKeyValueW(
+        HKEY_CURRENT_USER,
+        L"Software\\Microsoft\\Office\\16.0\\Word",
+        L"WwlibtDll",
+        REG_SZ,
+        empty,
+        (DWORD)((wcslen(empty) + 1) * sizeof(wchar_t))
+    );
+}
+
+*/
+
+
+
+
+
+
+
+
+00007ff9`699050f0
+
+
+00007ff9`69900000
+
+
+
+
+
+here is our actual fuzzing function:
+
+
+                             *************************************************************
+                             *                           FUNCTION                         
+                             *************************************************************
+                             undefined  __fastcall  FUN_180001660 (char *  param_1 )
+                               assume GS_OFFSET = 0xff00000000
+             undefined         AL:1           <RETURN>
+             char *            RCX:8          param_1
+             undefined8        Stack[0x8]:8   local_res8                              XREF[2]:     180001660 (W) , 
+                                                                                                   180001669 (R)   
+                             FUN_180001660                                   XREF[2]:     FUN_180001680:180001752 (c) , 
+                                                                                          180046078 (*)   
+       180001660 48  89  4c       MOV        qword ptr [RSP  + local_res8 ],param_1
+                 24  08
+       180001665 48  83  ec       SUB        RSP ,0x28
+                 28
+       180001669 48  8b  4c       MOV        param_1 ,qword ptr [RSP  + local_res8 ]
+                 24  30
+       18000166e e8  2d  ff       CALL       FUN_1800015a0                                    undefined FUN_1800015a0(char * p
+                 ff  ff
+       180001673 90              NOP
+
+
+
+
+
+
+
+
+
+
+
+Here is the stuff:
+
+
+
+Python path configuration:
+  PYTHONHOME = '"C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\"'
+  PYTHONPATH = '"C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\"'
+  program name = 'python'
+  isolated = 0
+  environment = 1
+  user site = 1
+  safe_path = 0
+  import site = 1
+  is in build tree = 0
+  stdlib dir = '"C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\"\Lib'
+  sys._base_executable = 'C:\\Users\\elsku\\newtools\\newwinafl\\winafl\\build64\\bin\\Release\\afl-fuzz.exe'
+  sys.base_prefix = '"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\\"'
+  sys.base_exec_prefix = '"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\\"'
+  sys.platlibdir = 'DLLs'
+  sys.executable = 'C:\\Users\\elsku\\newtools\\newwinafl\\winafl\\build64\\bin\\Release\\afl-fuzz.exe'
+  sys.prefix = '"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\\"'
+  sys.exec_prefix = '"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\\"'
+  sys.path = [
+    'C:\\Users\\elsku\\final\\"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\\"',
+    'C:\\Users\\elsku\\final\\python312.zip',
+    '"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\\"\\DLLs',
+    '"C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.12_3.12.2544.0_x64__qbz5n2kfra8p0\\"\\Lib',
+    'C:\\Users\\elsku\\newtools\\newwinafl\\winafl\\build64\\bin\\Release',
+  ]
+Fatal Python error: init_fs_encoding: failed to get the Python codec of the filesystem encoding
+Python runtime state: core initialized
+ModuleNotFoundError: No module named 'encodings'
+
+
+
+
+
+0:000> g
+Breakpoint 43 hit
+msosvg!Mso::SVG::EnvironmentRenderer::EnvironmentRenderer:
+00007ff9`d823c03c 48895c2420      mov     qword ptr [rsp+20h],rbx ss:00000001`e02fd2e8=0000000000000000
+0:000> g
+Breakpoint 431 hit
+msosvg!Mso::RefCountedObject<Mso::SVG::IConstructionEnvironment>::AddRef:
+00007ff9`d8147440 f0ff4108        lock inc dword ptr [rcx+8] ds:000001e7`6df72ec8=00000001
+0:000> g
+Breakpoint 138 hit
+msosvg!Mso::SVG::ViewportRenderer::ViewportRenderer:
+00007ff9`d817ff68 4053            push    rbx
+0:000> g
+Breakpoint 557 hit
+msosvg!Mso::SVG::ContainerRenderer::ContainerRenderer:
+00007ff9`d817fde8 48895c2418      mov     qword ptr [rsp+18h],rbx ss:00000001`e02fd200={gfx!GEL::EffectPennedPath::HitTest (00007ff9`6768c010)}
+0:000> g
+Breakpoint 431 hit
+msosvg!Mso::RefCountedObject<Mso::SVG::IConstructionEnvironment>::AddRef:
+00007ff9`d8147440 f0ff4108        lock inc dword ptr [rcx+8] ds:000001e7`6df72ec8=00000002
+0:000> g
+Breakpoint 56 hit
+msosvg!Mso::SVG::RenderableRenderer::SyncContextInfo:
+00007ff9`d8183d30 4053            push    rbx
+0:000> g
+Breakpoint 796 hit
+msosvg!Mso::SVG::StylableContext::GetTransform:
+00007ff9`d814dc80 80794000        cmp     byte ptr [rcx+40h],0 ds:000001e7`6df72f00=00
+0:000> g
+Breakpoint 394 hit
+msosvg!Mso::SVG::RenderableRenderer::Create:
+00007ff9`d81838c0 48895c2418      mov     qword ptr [rsp+18h],rbx ss:00000001`e02fd1c0=000001e74893a001
+0:000> g
+Breakpoint 570 hit
+msosvg!Mso::SVG::RectContext::GetType:
+00007ff9`d8186380 b807000000      mov     eax,7
+0:000> g
+Breakpoint 556 hit
+msosvg!Mso::SVG::ShapeRenderer::ShapeRenderer:
+00007ff9`d8180128 48895c2410      mov     qword ptr [rsp+10h],rbx ss:00000001`e02fd158=00000001e02fd1f8
+0:000> g
+Breakpoint 431 hit
+msosvg!Mso::RefCountedObject<Mso::SVG::IConstructionEnvironment>::AddRef:
+00007ff9`d8147440 f0ff4108        lock inc dword ptr [rcx+8] ds:000001e7`6df74ab8=00000001
+0:000> g
+Breakpoint 56 hit
+msosvg!Mso::SVG::RenderableRenderer::SyncContextInfo:
+00007ff9`d8183d30 4053            push    rbx
+0:000> g
+(82e8.2c54): C++ EH exception - code e06d7363 (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+KERNELBASE!RaiseException+0x8a:
+00007ffa`4eebab6a 0f1f440000      nop     dword ptr [rax+rax]
+0:011> k
+ # Child-SP          RetAddr               Call Site
+00 00000001`e0dff3c0 00007ffa`269926be     KERNELBASE!RaiseException+0x8a
+01 00000001`e0dff4c0 00007ff9`6975bc2c     MSVCP140!__ExceptionPtrRethrow+0x15e [D:\a\_work\1\s\src\vctools\crt\github\stl\src\excptptr.cpp @ 525] 
+02 00000001`e0dff5e0 00007ff9`6975cae4     Rtc!std::rethrow_exception+0x18
+03 00000001`e0dff610 00007ff9`6975d53b     Rtc!Concurrency::details::_ExceptionHolder::_RethrowUserException+0x34
+04 00000001`e0dff650 00007ff9`6986f5cf     Rtc!Concurrency::details::_Task_impl_base::_Wait+0x78
+05 00000001`e0dff690 00007ff9`6987e445     Rtc!signalr::connection_impl::start+0xbff
+06 00000001`e0dff780 00007ff9`697689ae     Rtc!std::_Func_impl_no_alloc<`Concurrency::details::_Task_impl<signalr::negotiation_response>::_CancelAndRunContinuations'::`34'::<lambda_1>,void>::_Copy+0x865
+07 00000001`e0dff7c0 00007ff9`69767a99     Rtc!std::_Func_impl_no_alloc<`Concurrency::details::_MakeTToUnitFunc<std::shared_ptr<signalr::transport> >'::`2'::<lambda_1>,unsigned char,std::shared_ptr<signalr::transport> >::_Do_call+0x7e
+08 00000001`e0dff810 00007ff9`69766639     Rtc!Concurrency::task<unsigned char>::_ContinuationTaskHandle<void,void,std::function<void __cdecl(Concurrency::task<void>)>,std::integral_constant<bool,1>,Concurrency::details::_TypeSelectorNoAsync>::_Continue+0x1a6
+09 00000001`e0dff960 00007ff9`6975c624     Rtc!Concurrency::details::_PPLTaskHandle<unsigned char,Concurrency::task<unsigned char>::_ContinuationTaskHandle<void,void,std::function<void __cdecl(Concurrency::task<void>)>,std::integral_constant<bool,1>,Concurrency::details::_TypeSelectorNoAsync>,Concurrency::details::_ContinuationTaskHandleBase>::invoke+0x79
+0a 00000001`e0dff9b0 00007ff9`6975bf95     Rtc!Concurrency::details::_TaskProcHandle::_RunChoreBridge+0x24
+0b 00000001`e0dff9e0 00007ffa`269a2ab9     Rtc!Concurrency::details::_DefaultPPLTaskScheduler::_PPLTaskChore::_Callback+0x25
+0c 00000001`e0dffa10 00007ffa`517a494e     MSVCP140!Concurrency::details::`anonymous namespace'::_Task_scheduler_callback+0x49 [D:\a\_work\1\s\src\vctools\crt\github\stl\src\taskscheduler.cpp @ 133] 
+0d 00000001`e0dffa40 00007ffa`517a61b1     ntdll!TppWorkpExecuteCallback+0x46e
+0e 00000001`e0dffb60 00007ffa`50d5e8d7     ntdll!TppWorkerThread+0x801
+0f 00000001`e0dffec0 00007ffa`517fbf6c     KERNEL32!BaseThreadInitThunk+0x17
+10 00000001`e0dffef0 00000000`00000000     ntdll!RtlUserThreadStart+0x2c
+
+
+
+
+0:011> .exr -1
+ExceptionAddress: 00007ffa4eebab6a (KERNELBASE!RaiseException+0x000000000000008a)
+   ExceptionCode: e06d7363 (C++ EH exception)
+  ExceptionFlags: 00000081
+NumberParameters: 4
+   Parameter[0]: 0000000019930520
+   Parameter[1]: 00000001e0dff4e0
+   Parameter[2]: 00007ff9699fbd40
+   Parameter[3]: 00007ff969740000
+
+
+
+
+
+
+   Breakpoint 431 hit
+msosvg!Mso::RefCountedObject<Mso::SVG::IConstructionEnvironment>::AddRef:
+00007ff9`d8147440 f0ff4108        lock inc dword ptr [rcx+8] ds:0000020c`74050428=00000002
+0:000> g
+Breakpoint 1326 hit
+msosvg!Mso::SVG::UnaryFilterPrimitiveRenderer::ApplyFilter:
+00007ff9`d823fb70 4c8bdc          mov     r11,rsp
+0:000> g
+Breakpoint 775 hit
+msosvg!Mso::SVG::FilterPrimitiveRenderer::GetInputEffect:
+00007ff9`d823f6f8 48895c2410      mov     qword ptr [rsp+10h],rbx ss:000000f9`1aeef778=0000000000000020
+0:000> g
+Breakpoint 1318 hit
+msosvg!Mso::SVG::FeMorphologyRenderer::ApplyUnaryFilter:
+00007ff9`d82412d0 488bc4          mov     rax,rsp
+0:000> g
+(54c0.9fb0): C++ EH exception - code e06d7363 (first chance)
+Breakpoint 12 hit

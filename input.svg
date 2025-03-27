@@ -1,0 +1,3 @@
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg">
+  <ns0:text x="100" y="100" font-family="sans-serif" dominant-baseline="central">hello <ns0:tspan font-size="48px">there</ns0:tspan></ns0:text>
+<ns0:tspan font-size="48px">there</ns0:tspan></ns0:svg>

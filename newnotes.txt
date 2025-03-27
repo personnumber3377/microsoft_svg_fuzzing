@@ -1,0 +1,7 @@
+
+
+Ok, so the dllinjection.cpp will be compiled to the injection.exe executable, while sample.cpp will be compiled to the injected dll thing....
+
+
+
+

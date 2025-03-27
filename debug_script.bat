@@ -1,0 +1,1 @@
+"C:\Program Files\WindowsApps\Microsoft.WinDbg_1.2502.25002.0_x64__8wekyb3d8bbwe\DbgX.Shell.exe" -c "$<debug.txt" "C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE"

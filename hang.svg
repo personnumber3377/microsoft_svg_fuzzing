@@ -1,0 +1,6 @@
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<ns0:g id="g1" transform="translate(100, 100)">
+<ns0:circle cx="0" cy="0" r="50" fill="green" />
+<ns0:text x="0" y="10" font-size="-5417682942730746826" text-anchor="middle" fill="yellow">Kibology</ns0:text>
+</ns0:g>
+</ns0:svg>
